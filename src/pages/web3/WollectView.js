@@ -171,6 +171,7 @@ function WollectView() {
                   Switch Network
                 </Button>
                 <Select placeholder="Select network" onChange={handleNetwork}>
+                  {/* 手动设置chainid，切换不同的网络 */}
                   <option value="3">Ropsten</option>
                   <option value="4">Rinkeby</option>
                   <option value="42">Kovan</option>

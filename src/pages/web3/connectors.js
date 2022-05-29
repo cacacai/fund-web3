@@ -2,18 +2,19 @@ import { InjectedConnector } from "@web3-react/injected-connector";
 import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
 import { WalletLinkConnector } from "@web3-react/walletlink-connector";
 
+// injected 为matemask钱包的连接，chainid为不同测试网络的地址。1为主网，1337为本地测试
 const injected = new InjectedConnector({
-  supportedChainIds: [1, 3, 4, 5, 42]
+  supportedChainIds: [1, 3, 4, 5, 42, 1337]
 });
 
 const walletconnect = new WalletConnectConnector({
-  rpcUrl: `https://mainnet.infura.io/v3/${process.env.INFURA_KEY}`,
+  rpcUrl: "https://mainnet.infura.io/v3/" + process.env.REACT_APP_INFURA_KEY,
   bridge: "https://bridge.walletconnect.org",
   qrcode: true
 });
 
 const walletlink = new WalletLinkConnector({
-  url: `https://mainnet.infura.io/v3/${process.env.INFURA_KEY}`,
+  url: `https://mainnet.infura.io/v3/${process.env.REACT_APP_INFURA_KEY}`,
   appName: "web3-react-demo"
 });
 

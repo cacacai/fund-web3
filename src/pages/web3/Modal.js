@@ -20,7 +20,6 @@ export default function SelectWalletModal({ isOpen, closeModal }) {
   const setProvider = (type) => {
     window.localStorage.setItem("provider", type);
   };
-
   return (
     <Modal isOpen={isOpen} onClose={closeModal} isCentered>
       <ModalOverlay />
