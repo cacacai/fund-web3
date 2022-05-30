@@ -17,16 +17,10 @@ function WollectInit() {
         deactivate,
         active
     } = useWeb3React();
-    const [userbalance, setUserbalance] = useState('');
-    const getBalance = async () => {
-        const balance =  await provider.getBalance(account)
-        setUserbalance(balance)
-    }
 
     useEffect(() => {
         const provider = window.localStorage.getItem("provider");
         if (provider) activate(connectors[provider]);
-    
     }, []);
     return (<></>)
 }

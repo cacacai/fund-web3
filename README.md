@@ -12,3 +12,16 @@ https://www.npmjs.com/package/@web3-react/core/v/beta
 页面参考学习
 https://github.com/NoahZinsmeister/web3-react/blob/main/packages/example-next/components/connectorCards/MetaMaskCard.tsx
 https://web3-react-mu.vercel.app/
+
+
+# 迭代记录
+使用稳定版本 https://www.npmjs.com/package/@web3-react/core/v/6.1.9
+比较全面的接口说明  https://www.linumlabs.com/articles/how-to-use-web3react-in-your-next-project
+
+
+
+
+
+
+
+https://blog.csdn.net/weixin_43840202/article/details/118907658

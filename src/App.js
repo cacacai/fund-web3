@@ -14,13 +14,11 @@ import Create from "./pages/Create";
 import Detail from "./pages/Detail";
 import Person from "./pages/Person";
 
-import WollectInit from "./components/WollectInit";
 
 
 export default function App() {
   return (
     <Router>
-      <WollectInit />
       <NavBar />
       <Switch>
         <Route path="/home">

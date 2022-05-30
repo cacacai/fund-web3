@@ -1,16 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import { useWeb3React } from "@web3-react/core";
 import {
-    VStack,
-    useDisclosure,
-    Button,
+    Spinner,
     Text,
-    HStack,
-    Select,
-    Input,
-    Box
-  } from "@chakra-ui/react";
+} from "@chakra-ui/react";
+import Web3 from "web3";
 
 
 
@@ -18,8 +13,11 @@ const { ethers } = require("ethers");
 
 
 function Home() {
-    const [userbalance, setUserbalance] = useState('');
+    const [loading,setLoading] = useState(false);
+    const [userbalance, setUserbalance] = useState("");
     const [error, setError] = useState("");
+    const componentMounted = useRef(true); // (3) component is mounted
+
     const {
         library,
         chainId,
@@ -29,34 +27,24 @@ function Home() {
         active
     } = useWeb3React();
 
-    function useContract(contract) {
-        const connector = usePriorityConnector();
-        const provider = usePriorityProvider();
-      
-        contract = contract.connect(provider);
-      
-        if (getConnectorName(connector) !== "Network") {
-          const signer = provider?.getSigner?.();
-          if (signer !== undefined) contract = contract.connect(signer);
-        }
-      
-        return contract;
-      }
-      
-
-    const getBlance = async () => {
+    useEffect(async () => {
+        setLoading(true);
+        //https://stackoverflow.com/questions/54954385/react-useeffect-causing-cant-perform-a-react-state-update-on-an-unmounted-comp
         if (!library) return;
         try {
-            const balance = await library.provider.getBalance(account)
-            setUserbalance(balance)
-            console.log(account," ",balance)
+            const provider = new Web3(library.provider)
+            const balance = await provider.eth.getBalance(account)
+            if (componentMounted.current){ // (5) is component still mounted?
+                setUserbalance(provider.utils.fromWei(balance)) // (1) write data to state
+                setLoading(false); // (2) write some value to state
+            }
         } catch (error) {
             console.log(error)
             setError(error);
         }
-    };
-
-    useEffect(() => {
+        return () => { // This code runs when component is unmounted
+            componentMounted.current = false; // (4) set it to false when we leave the page
+        }
     }, []);
 
 
@@ -66,14 +54,9 @@ function Home() {
 
     return (
         <div>
-            <Button onClick={getBlance}>
-                getBalance
-            </Button>
-            {userbalance ? (
-                <Tooltip label={userbalance} placement="bottom">
-                    <Text>{`Balance: ${userbalance}`}</Text>
-                </Tooltip>
-            ) : null}
+            {loading? (
+                <Spinner/>
+            ) : <Text>{`Balance: ${userbalance}`}</Text>}
         </div>
     )
 }
