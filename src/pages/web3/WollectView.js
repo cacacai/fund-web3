@@ -13,7 +13,6 @@ import SelectWalletModal from "./Modal";
 import { useWeb3React } from "@web3-react/core";
 import { Tooltip } from "@chakra-ui/react";
 import { networkParams } from "./networks";
-import { connectors } from "./connectors";
 import { toHex, truncateAddress } from "./utils";
 function WollectView() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -104,10 +103,7 @@ function WollectView() {
     deactivate();
   };
 
-  useEffect(() => {
-    const provider = window.localStorage.getItem("provider");
-    if (provider) activate(connectors[provider]);
-  }, []);
+
 
   return (
     <>
