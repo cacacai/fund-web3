@@ -35,7 +35,9 @@ function Home() {
             const provider = new Web3(library.provider)
             const balance = await provider.eth.getBalance(account)
             if (componentMounted.current){ // (5) is component still mounted?
-                setUserbalance(provider.utils.fromWei(balance)) // (1) write data to state
+                let temp = provider.utils.fromWei(balance)
+                temp = temp.slice(0,temp.indexOf(".") +3)
+                setUserbalance(temp) // (1) write data to state
                 setLoading(false); // (2) write some value to state
             }
         } catch (error) {
@@ -45,7 +47,7 @@ function Home() {
         return () => { // This code runs when component is unmounted
             componentMounted.current = false; // (4) set it to false when we leave the page
         }
-    }, []);
+    }, [userbalance,library]);
 
 
     // MetaMask requires requesting permission to connect users accounts
