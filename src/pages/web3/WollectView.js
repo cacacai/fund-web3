@@ -9,6 +9,8 @@ import {
   Input,
   Box
 } from "@chakra-ui/react";
+import Web3 from "web3";
+
 import SelectWalletModal from "./Modal";
 import { useWeb3React } from "@web3-react/core";
 import { Tooltip } from "@chakra-ui/react";
@@ -30,6 +32,8 @@ function WollectView() {
   const [message, setMessage] = useState("");
   const [signedMessage, setSignedMessage] = useState("");
   const [verified, setVerified] = useState();
+  const [userbalance, setUserbalance] = useState("");
+
 
   const handleNetwork = (e) => {
     const id = e.target.value;
@@ -60,6 +64,22 @@ function WollectView() {
       }
     }
   };
+  /**
+   * 获取账户余额
+   */
+    const getBlance = async () => {
+        if (!library) return;
+        try {
+            const provider = new Web3(library.provider)
+            const balance = await provider.eth.getBalance(account)
+            let temp = provider.utils.fromWei(balance)
+            temp = temp.slice(0, temp.indexOf(".") + 3)
+            setUserbalance(temp)
+        } catch (error) {
+            console.log(error)
+            setError(error);
+        }
+    }
 
   const signMessage = async () => {
     if (!library) return;
@@ -103,7 +123,9 @@ function WollectView() {
     deactivate();
   };
 
-
+    useEffect(() => {
+        getBlance()
+    }, [userbalance, library]);//需要和外部hook数据互动更新，需要添加到数组中
 
   return (
     <>
@@ -151,6 +173,7 @@ function WollectView() {
           <Tooltip label={account} placement="right">
             <Text>{`Account: ${truncateAddress(account)}`}</Text>
           </Tooltip>
+          <Text>{`Balance: ${userbalance} eth`}</Text>
           <Text>{`Network ID: ${chainId ? chainId : "No Network"}`}</Text>
         </VStack>
         {active && (
